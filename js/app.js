@@ -566,6 +566,12 @@
     });
 
     window.addEventListener("beforeunload", () => { saveActive(); persist(); });
+
+    // Empty-state actions
+    const starterBtn = document.getElementById("emptyStarterBtn");
+    if (starterBtn) starterBtn.addEventListener("click", () => { cm.setValue(DEFAULT_CODE); cm.focus(); });
+    const tplBtn = document.getElementById("emptyTemplatesBtn");
+    if (tplBtn) tplBtn.addEventListener("click", () => { el.templateSelect.focus(); el.templateSelect.click(); });
   }
 
   function toggleFullscreen() {

@@ -168,6 +168,9 @@ select.control { -webkit-appearance: none; appearance: none; padding-right: 12px
 .preview-canvas { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
 .preview-canvas svg { max-width: 100%; max-height: 100%; }
 .preview-empty { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: var(--text-faint); font-size: 14px; text-align: center; padding: 20px; }
+.preview-empty__inner { display: flex; flex-direction: column; align-items: center; gap: 14px; }
+.preview-empty__actions { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+.preview-empty__hint { font-size: 12.5px; color: var(--text-faint); margin: 0; }
 
 .error-panel {
   flex: none; max-height: 40%; overflow: auto;

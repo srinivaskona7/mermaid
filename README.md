@@ -17,28 +17,34 @@ export as SVG/PNG or share a link. No build step — just static files.
 | **Docs** | Multiple named diagrams, autosave, file manager, open `.mmd` |
 | **PWA** | Installable, offline via service worker |
 
-### Plugin features (30 modules in `js/features/`)
+### Plugin features (31 modules in `js/features/`)
 
 Each is an isolated self-registering module built against the `MS` plugin API
-(`js/features/_API.md`). All 30 load with **zero runtime errors**.
+(`js/features/_API.md`). All load with **zero runtime errors**.
 
 | # | Feature | # | Feature |
 |---|---------|---|---------|
-| 1 | Command palette (⌘K) | 16 | App theme editor (presets + custom) |
-| 2 | Sequence diagram pack (16 examples) | 17 | QR share code |
-| 3 | Mermaid version selector (11/10.x) | 18 | Split orientation toggle |
-| 4 | Diagram config (themeVariables) | 19 | System theme sync |
-| 5 | Export to PDF | 20 | Template gallery (rendered thumbs) |
-| 6 | Find & replace (⌘F/⌘H) | 21 | Insert snippets |
-| 7 | Keyboard shortcuts help | 22 | Keyword autocomplete (⌘Space) |
-| 8 | Flowchart direction toggle | 23 | Snapshot history / restore |
-| 9 | Preview background modes | 24 | Copy as Markdown |
-| 10 | Preview minimap | 25 | Embed code generator |
-| 11 | Editor font size | 26 | Print diagram |
-| 12 | Word wrap toggle | 27 | Line numbers toggle |
-| 13 | Import from URL / Gist | 28 | Live error gutter |
-| 14 | Presentation mode | 29 | More diagram types (15 examples) |
-| 15 | Diagram statistics | 30 | Accessibility / high-contrast mode |
+| 1 | Command palette (⌘K) | 17 | QR share code |
+| 2 | Sequence diagram pack (16 examples) | 18 | Split orientation toggle |
+| 3 | Mermaid version selector (11/10.x) | 19 | System theme sync |
+| 4 | Diagram config (themeVariables) | 20 | Template gallery (rendered thumbs) |
+| 5 | Export to PDF | 21 | Insert snippets |
+| 6 | Find & replace (⌘F/⌘H) | 22 | Keyword autocomplete (⌘Space) |
+| 7 | Keyboard shortcuts help | 23 | Snapshot history / restore |
+| 8 | Flowchart direction toggle | 24 | Copy as Markdown |
+| 9 | Preview background modes | 25 | Embed code generator |
+| 10 | Preview minimap | 26 | Print diagram |
+| 11 | Editor font size | 27 | Line numbers toggle |
+| 12 | Word wrap toggle | 28 | Live error gutter |
+| 13 | Import from URL / Gist | 29 | More diagram types (15 examples) |
+| 14 | Presentation mode | 30 | Accessibility / high-contrast mode |
+| 15 | Diagram statistics | 31 | **Auto-fix syntax errors** |
+| 16 | App theme editor | | |
+
+**Auto-fix** (editor toolbar → *Fix*, or ⌘K → "Auto-fix"): repairs common mistakes —
+smart quotes, `<br>`→`<br/>`, single-dash `->`→`-->`, `=>`→`==>`, and a missing
+diagram header — validating each candidate with `mermaid.parse` before applying, so
+it never turns valid code invalid. The Fix button pulses when the diagram errors.
 
 ### Extending it
 

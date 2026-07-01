@@ -34,7 +34,8 @@
     "line-numbers-toggle",
     "lint-gutter",
     "more-types",
-    "accessibility"
+    "accessibility",
+    "auto-fix"
   ];
 
   var i = 0;

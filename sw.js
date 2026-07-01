@@ -1,6 +1,6 @@
 /* Mermaid Studio service worker — offline-first for the app shell,
    cache-first with network fallback for CDN libraries. */
-const VERSION = "mstudio-v2";
+const VERSION = "mstudio-v3";
 const FEATURES = [
   "command-palette", "sequence-examples", "version-selector", "diagram-config",
   "export-pdf", "search-replace", "shortcuts-help", "layout-direction", "bg-toggle",
@@ -8,7 +8,7 @@ const FEATURES = [
   "diagram-stats", "theme-editor", "qr-share", "split-orientation", "auto-theme",
   "gallery", "snippets", "autocomplete", "undo-history", "copy-markdown",
   "embed-code", "print-diagram", "line-numbers-toggle", "lint-gutter",
-  "more-types", "accessibility",
+  "more-types", "accessibility", "auto-fix",
 ].map((s) => "./js/features/" + s + ".js");
 
 const SHELL = [
