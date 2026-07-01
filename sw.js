@@ -1,6 +1,6 @@
 /* Mermaid Studio service worker — offline-first for the app shell,
    cache-first with network fallback for CDN libraries. */
-const VERSION = "mstudio-v5";
+const VERSION = "mstudio-v6";
 const FEATURES = [
   "command-palette", "sequence-examples", "version-selector", "diagram-config",
   "export-pdf", "search-replace", "shortcuts-help", "layout-direction", "bg-toggle",
