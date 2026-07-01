@@ -25,6 +25,7 @@
           "  width:100% !important;",
           "}",
           "body." + BODY_CLASS + " #previewPane .pane__head,",
+          "body." + BODY_CLASS + " #previewPane .pane__titlebar,",
           "body." + BODY_CLASS + " #previewPane .pane__tools,",
           "body." + BODY_CLASS + " #previewPane .pane__toolbar{",
           "  display:none !important;",
