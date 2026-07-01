@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Mermaid Studio — a premium live editor for Mermaid diagrams. Paste code, render instantly, export SVG/PNG, and work offline." />
+  <meta name="theme-color" content="#0f766e" />
+  <title>Mermaid Studio · Live Diagram Editor</title>
+
+  <link rel="manifest" href="manifest.webmanifest" />
+  <link rel="icon" type="image/svg+xml" href="icons/icon.svg" />
+  <link rel="apple-touch-icon" href="icons/icon.svg" />
+
+  <!-- CodeMirror 5 (editor) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/theme/material-darker.min.css" />
+
+  <link rel="stylesheet" href="css/styles.css" />
+</head>
+<body>
+  <!-- ============ TOP BAR ============ -->
+  <header class="topbar">
+    <div class="brand">
+      <svg class="brand__mark" viewBox="0 0 32 32" aria-hidden="true">
+        <defs>
+          <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#14b8a6"/><stop offset="1" stop-color="#6366f1"/>
+          </linearGradient>
+        </defs>
+        <rect x="2" y="2" width="28" height="28" rx="8" fill="url(#g)"/>
+        <path d="M8 22V12l4 5 4-5 4 5 4-5v10" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="brand__text">
+        <span class="brand__name">Mermaid Studio</span>
+        <input id="docTitle" class="doc-title" value="Untitled diagram" spellcheck="false" aria-label="Document title" />
+      </div>
+    </div>
+
+    <div class="topbar__actions">
+      <div class="select-wrap">
+        <label for="templateSelect" class="sr-only">Templates</label>
+        <select id="templateSelect" class="control" title="Insert a template">
+          <option value="">＋ Templates…</option>
+        </select>
+      </div>
+
+      <div class="select-wrap">
+        <label for="themeSelect" class="sr-only">Diagram theme</label>
+        <select id="themeSelect" class="control" title="Diagram theme">
+          <option value="default">Theme: Default</option>
+          <option value="neutral">Theme: Neutral</option>
+          <option value="forest">Theme: Forest</option>
+          <option value="dark">Theme: Dark</option>
+          <option value="base">Theme: Base</option>
+        </select>
+      </div>
+
+      <div class="menu" id="docsMenu">
+        <button class="control" id="docsBtn" title="Saved diagrams" aria-haspopup="true">
+          <svg viewBox="0 0 24 24" class="ico"><path d="M4 6h16M4 12h16M4 18h10"/></svg>
+          Files
+        </button>
+        <div class="menu__panel" id="docsPanel" role="menu" hidden></div>
+      </div>
+
+      <div class="menu" id="exportMenu">
+        <button class="control control--primary" id="exportBtn" title="Export diagram" aria-haspopup="true">
+          <svg viewBox="0 0 24 24" class="ico"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 21h16"/></svg>
+          Export
+        </button>
+        <div class="menu__panel menu__panel--right" id="exportPanel" role="menu" hidden>
+          <button class="menu__item" data-export="svg">Download SVG</button>
+          <button class="menu__item" data-export="png">Download PNG (2×)</button>
+          <button class="menu__item" data-export="png4">Download PNG (4×)</button>
+          <button class="menu__item" data-export="clipimg">Copy image to clipboard</button>
+          <button class="menu__item" data-export="code">Copy Mermaid code</button>
+          <button class="menu__item" data-export="mmd">Download .mmd file</button>
+          <button class="menu__item" data-export="link">Copy shareable link</button>
+        </div>
+      </div>
+
+      <button class="control icon-only" id="installBtn" title="Install app" hidden>
+        <svg viewBox="0 0 24 24" class="ico"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>
+      </button>
+
+      <button class="control icon-only" id="darkToggle" title="Toggle dark mode">
+        <svg viewBox="0 0 24 24" class="ico" id="darkIco"><path d="M21 12.8A9 9 0 1111.2 3 7 7 0 0021 12.8z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <!-- ============ WORKSPACE ============ -->
+  <main class="workspace" id="workspace">
+    <!-- Editor pane -->
+    <section class="pane pane--editor" id="editorPane">
+      <div class="pane__toolbar">
+        <span class="pane__label">Code</span>
+        <div class="pane__tools">
+          <button class="chip" id="newBtn" title="New diagram (Ctrl/Cmd+N)">New</button>
+          <button class="chip" id="formatBtn" title="Tidy indentation">Format</button>
+          <button class="chip" id="uploadBtn" title="Open .mmd file">Open</button>
+          <input type="file" id="fileInput" accept=".mmd,.txt,.mermaid" hidden />
+          <button class="chip" id="copyCodeBtn" title="Copy code">Copy</button>
+        </div>
+      </div>
+      <div class="editor-host"><textarea id="editor"></textarea></div>
+    </section>
+
+    <!-- Resizer -->
+    <div class="resizer" id="resizer" role="separator" aria-orientation="vertical" tabindex="0" title="Drag to resize"></div>
+
+    <!-- Preview pane -->
+    <section class="pane pane--preview" id="previewPane">
+      <div class="pane__toolbar">
+        <span class="pane__label">Preview <span class="badge" id="typeBadge">—</span></span>
+        <div class="pane__tools">
+          <button class="chip" id="zoomOut" title="Zoom out">−</button>
+          <span class="zoom-val" id="zoomVal">100%</span>
+          <button class="chip" id="zoomIn" title="Zoom in">＋</button>
+          <button class="chip" id="zoomFit" title="Fit to screen">Fit</button>
+          <button class="chip" id="zoomReset" title="Reset zoom">1:1</button>
+          <button class="chip" id="fullscreenBtn" title="Fullscreen preview">⛶</button>
+        </div>
+      </div>
+      <div class="preview-host" id="previewHost">
+        <div class="preview-canvas" id="previewCanvas"></div>
+        <div class="preview-empty" id="previewEmpty" hidden>Start typing Mermaid code to see your diagram.</div>
+      </div>
+      <div class="error-panel" id="errorPanel" hidden>
+        <div class="error-panel__head">
+          <span class="error-panel__dot"></span> Diagram error
+        </div>
+        <pre class="error-panel__msg" id="errorMsg"></pre>
+      </div>
+    </section>
+  </main>
+
+  <!-- ============ STATUS BAR ============ -->
+  <footer class="statusbar">
+    <span id="statusRender" class="status status--ok">Ready</span>
+    <span class="status-sep">·</span>
+    <span id="statusSaved">All changes saved</span>
+    <span class="status-spacer"></span>
+    <span id="statusPos">Ln 1, Col 1</span>
+    <span class="status-sep">·</span>
+    <span id="statusLines">0 lines</span>
+  </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <!-- Scripts (classic, no build step) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/codemirror.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/mode/simple.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/edit/closebrackets.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/addon/selection/active-line.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/svg-pan-zoom/3.6.1/svg-pan-zoom.min.js"></script>
+
+  <script src="js/templates.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/features/index.js"></script>
+</body>
+</html>
